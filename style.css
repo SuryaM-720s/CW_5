@@ -1,0 +1,266 @@
+/*
+ * CW-05 · JS Form Validation
+ * Look: a neatly printed paper form. Off-white paper, black ink, one serif typeface,
+ * fields drawn as lines to write on, red only for errors. No web fonts, no shadows.
+ */
+
+:root {
+  color-scheme: light;
+
+  --paper: #f5f2ea;
+  --ink: #1b1a17;
+  --faint: #6b675e;      /* field numbers, small print */
+  --rule: #1b1a17;
+  --hair: #cfc9bb;
+  --fill: #ece7da;       /* a field you are typing in */
+  --error: #b0171c;
+
+  --serif: Charter, "Bitstream Charter", "Iowan Old Style", "Sitka Text", Cambria, Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 18px/1.5 var(--serif);
+}
+
+.sheet {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 64px 24px 96px;
+}
+
+/* ---------- skip link: hidden until the first Tab ---------- */
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---------- heading, with the thick-and-thin rule of a printed form ---------- */
+
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  position: relative;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--rule);
+}
+
+/* thin second line under the thick one */
+.sheet-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  border-bottom: 1px solid var(--rule);
+}
+
+h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.form-no {
+  margin: 0;
+  font-size: 14px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.note {
+  margin: 24px 0 8px;
+  color: var(--faint);
+  font-style: italic;
+}
+
+/* ---------- rows: number · label · line to write on ---------- */
+
+.row {
+  display: grid;
+  grid-template-columns: 24px 120px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: end;
+  padding-top: 32px;
+}
+
+.num {
+  font-size: 14px;
+  color: var(--faint);
+  padding-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+label {
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+.error {
+  margin: 0 0 4px;
+  color: var(--error);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.error:empty {
+  margin: 0;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 6px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* the line thickens and the field shades while you write in it */
+input:focus-visible {
+  outline: none;
+  background: var(--fill);
+  box-shadow: inset 0 -1px 0 var(--rule);
+}
+
+input.invalid {
+  border-bottom-color: var(--error);
+  box-shadow: inset 0 -1px 0 var(--error);
+}
+
+/* ---------- the Add button: a plain black stamp ---------- */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 40px;
+}
+
+button {
+  min-width: 120px;
+  padding: 10px 28px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.12s ease, color 0.12s ease, transform 0.08s ease;
+}
+
+button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ---------- the result: a tear-off stub under a dashed "perforation" ---------- */
+
+.stub {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 2px dashed var(--hair);
+}
+
+.stub h2 {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--faint);
+}
+
+.stub dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 0;
+}
+
+.stub .item {
+  min-width: 0;
+}
+
+.stub dt {
+  font-size: 14px;
+  color: var(--faint);
+}
+
+.stub dd {
+  margin: 2px 0 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--hair);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  input, button { transition: none; }
+  button:active { transform: none; }
+}
+
+/* ---------- phones ---------- */
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+
+  .sheet { padding: 40px 16px 64px; }
+
+  h1 { font-size: 28px; }
+
+  .row {
+    grid-template-columns: 20px minmax(0, 1fr);
+    padding-top: 24px;
+  }
+
+  /* label sits beside its number; error + line go full width underneath */
+  .field {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+  }
+
+  .actions button { width: 100%; }
+
+  .stub dl { grid-template-columns: 1fr; }
+}
