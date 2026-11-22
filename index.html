@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User entry · CW-05</title>
+  <meta name="description" content="CSC 4370 CW-05: a user form checked with JavaScript.">
+  <meta name="theme-color" content="#f5f2ea">
+  <link rel="stylesheet" href="style.css">
+  <!-- defer: the script runs after the form exists, so no inline onclick is needed -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#userForm">Skip to the form</a>
+
+  <main class="sheet">
+    <header class="sheet-head">
+      <h1>User entry</h1>
+      <p class="form-no" translate="no">CSC 4370 · CW-05</p>
+    </header>
+
+    <p class="note">Fill in all three fields, then press Add.</p>
+
+    <!-- novalidate turns off the browser's built-in bubbles so our JavaScript does all the checking -->
+    <form id="userForm" novalidate>
+      <div class="row">
+        <span class="num" aria-hidden="true">1</span>
+        <label for="userId">ID</label>
+        <div class="field">
+          <!-- Red error text is written here (above the input) with innerHTML -->
+          <p class="error" id="userIdErr" aria-live="polite"></p>
+          <input type="text" id="userId" name="userId" inputmode="numeric" maxlength="10"
+                 autocomplete="off" spellcheck="false" aria-describedby="userIdErr">
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="num" aria-hidden="true">2</span>
+        <label for="firstName">First Name</label>
+        <div class="field">
+          <p class="error" id="firstNameErr" aria-live="polite"></p>
+          <input type="text" id="firstName" name="firstName" maxlength="50"
+                 autocomplete="given-name" aria-describedby="firstNameErr">
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="num" aria-hidden="true">3</span>
+        <label for="lastName">Last Name</label>
+        <div class="field">
+          <p class="error" id="lastNameErr" aria-live="polite"></p>
+          <input type="text" id="lastName" name="lastName" maxlength="50"
+                 autocomplete="family-name" aria-describedby="lastNameErr">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" id="addBtn">Add</button>
+      </div>
+    </form>
+
+    <!-- The last valid entry is built here with DOM operations (createElement / textContent).
+         It looks like the tear-off stub at the bottom of a paper form. -->
+    <section id="result" class="stub" aria-live="polite" hidden></section>
+
+    <noscript>
+      <p class="error">This form needs JavaScript turned on to check your entry.</p>
+    </noscript>
+  </main>
+</body>
+</html>
